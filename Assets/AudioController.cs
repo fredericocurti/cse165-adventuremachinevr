@@ -13,13 +13,13 @@ public class AudioController : MonoBehaviour
     public GameObject[] speakerGameObjects;
     public List<AudioSource> channels;
     private int channelsPerSpeaker = 5;
+    private bool masterPlaying = false;
 
     // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        soundLoopQueue = new Queue<AudioClip>();
         channels.AddRange(GetComponents<AudioSource>());
- 
     }
 
     public void PlayLoop(AudioClip audioClip, string loopType)
@@ -27,20 +27,44 @@ public class AudioController : MonoBehaviour
         if (loopType == "bass" && audioClip != bassLoop)
         {
             bassLoop = audioClip;
-            PlayClipOnChannel(audioClip, 4);
+            PlayClipOnChannel(audioClip, 5);
         }
-        if (loopType == "drum" && audioClip != bassLoop)
+        if (loopType == "drum" && audioClip != drumLoop)
         {
             drumLoop = audioClip;
-            PlayClipOnChannel(audioClip, 3);
+            PlayClipOnChannel(audioClip, 4);
         }
-
     }
 
 
-    void PlayClipOnChannel(AudioClip audioClip, int channel)
+    public void PlayClipOnChannel(AudioClip audioClip, int channel)
     {
+        if (masterPlaying == false)
+        {
+            masterPlaying = true;
+            channels[0].Play();
+        }
+        if (channels[channel].clip != audioClip)
+        {
             channels[channel].clip = audioClip;
             channels[channel].Play();
+            //channels[channel].PlayOneShot(audioClip);
+            //}
+
+        }
+    }
+
+    public void ClearChannel(int channel)
+    {
+        channels[channel].Stop();
+        channels[channel].clip = null;
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < channelsPerSpeaker; i++)
+        {
+            channels[i + 1].timeSamples = channels[0].timeSamples;
+        }
     }
 }
