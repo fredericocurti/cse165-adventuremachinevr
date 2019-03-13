@@ -24,12 +24,12 @@ public class AudioController : MonoBehaviour
 
     public void PlayLoop(AudioClip audioClip, string loopType)
     {
-        if (loopType == "bass" && audioClip != bassLoop)
+        if (loopType == "bass")
         {
             bassLoop = audioClip;
             PlayClipOnChannel(audioClip, 5);
         }
-        if (loopType == "drum" && audioClip != drumLoop)
+        if (loopType == "drum")
         {
             drumLoop = audioClip;
             PlayClipOnChannel(audioClip, 4);

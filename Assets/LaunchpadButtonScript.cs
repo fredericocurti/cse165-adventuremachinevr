@@ -18,8 +18,16 @@ public class LaunchpadButtonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print(gameObject.name);
         lc.onButtonPress(transform);
+    }
+
+    private void OnValidate()
+    {
+        if (active == true)
+        {
+            lc.onButtonPress(transform);
+            active = false;
+        }
     }
 
     // Update is called once per frame

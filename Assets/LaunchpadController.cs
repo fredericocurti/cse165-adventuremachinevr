@@ -17,6 +17,7 @@ public class LaunchpadController : MonoBehaviour
     public Transform activeBassButton;
     public Transform activeDrumButton;
     public Queue<Transform> activeSoundButtons;
+    public int loopSamples = 176400;
 
     public Image timerImage;
     private AudioController ac;
@@ -32,7 +33,7 @@ public class LaunchpadController : MonoBehaviour
     public float timerFill = 0f;
     private int soundButtonCounter = 0;
 
-    private bool samplesReady = false;
+    public bool samplesReady = false;
 
     public void RemoveFromQueue(Queue<Transform> q, Transform t)
     {
@@ -64,11 +65,6 @@ public class LaunchpadController : MonoBehaviour
         soundLoops = new List<AudioClip>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void onButtonPress(Transform button)
     {
@@ -113,8 +109,16 @@ public class LaunchpadController : MonoBehaviour
         {
             if (activeSoundButtons.Contains(button))
             {
+                for (int i = 1; i < ac.channels.Count; i++)
+                {
+                    if (ac.channels[i].clip == buttonLoop)
+                    {
+                        ac.ClearChannel(i);
+                    }
+                }
                 RemoveFromQueue(activeSoundButtons, button);
                 button.GetComponent<Renderer>().material.color = buttonGreenColor;
+
                 return;
             }
 
@@ -179,8 +183,6 @@ public class LaunchpadController : MonoBehaviour
     void FixedUpdate()
     {
         syncTimer += Time.fixedDeltaTime;
-        timerFill = syncTimer / 4.35f;
-        timerImage.fillAmount = timerFill;
 
         if (!samplesReady)
         {
@@ -191,12 +193,7 @@ public class LaunchpadController : MonoBehaviour
             {
                 soundLoops.Add(sb.GetComponent<LaunchpadButtonScript>().loop);
             }
-            samplesReady = true;
-        }
 
-
-        if (syncTimer >= 4.35f)
-        {
             if (activeBassButton)
             {
                 ac.PlayLoop(bassLoop, "bass");
@@ -210,8 +207,23 @@ public class LaunchpadController : MonoBehaviour
                 ac.PlayClipOnChannel(soundLoops[i], i + 1);
             }
 
-            syncTimer = 0f;
-            samplesReady = false;
+            samplesReady = true;
         }
+
+
+        //if (syncTimer >= 4.35f)
+        //{
+
+            
+
+        //    syncTimer = 0f;
+        //}
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        int masterTimeSamples = ac.channels[0].timeSamples;
+        timerImage.fillAmount = (float)masterTimeSamples / (float)(loopSamples + 10000f);
     }
 }
