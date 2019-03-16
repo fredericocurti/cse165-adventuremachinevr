@@ -6,6 +6,7 @@ public class Synthesizer : MonoBehaviour
 {
     public Transform white_key_prefab;
     public Transform black_key_prefab;
+    public Transform type_button_prefab;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,15 @@ public class Synthesizer : MonoBehaviour
                 counter = 1;
                 x += 0.654f;
             }
+        }
+
+        x = -6.0f;
+        for (int k = 0; k < 4; k++)
+        {
+            newKey = Instantiate(type_button_prefab, synthesizer.transform);
+            newKey.localPosition = new Vector3(x, 0.445f, 0.71f);
+
+            x += 0.6f;
         }
     }
 
