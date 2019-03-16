@@ -19,12 +19,6 @@ public class Synthesizer : MonoBehaviour
         {
             newKey = Instantiate(white_key_prefab, synthesizer.transform);
             newKey.localPosition = new Vector3(x, 0.17f, -0.15f);
-
-/*
-            newKey = Instantiate(key_prefab, new Vector3(x, 0.17f, -0.15f), Quaternion.identity, synthesizer.transform);
-
-            newKey.parent = synthesizer.transform;
-*/
             x += 0.327f;
         }
 
