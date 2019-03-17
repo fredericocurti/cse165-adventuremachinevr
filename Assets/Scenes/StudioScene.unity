@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 39699362}
   - component: {fileID: 39699361}
   - component: {fileID: 39699360}
+  - component: {fileID: 39699363}
   m_Layer: 0
   m_Name: Octave_button_inc
   m_TagString: Untagged
@@ -203,6 +204,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 39699358}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &39699363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39699358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ff14ac2dd9a6e4dae42d8b2920a315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &92052843
 GameObject:
   m_ObjectHideFlags: 0
@@ -4334,6 +4347,7 @@ GameObject:
   - component: {fileID: 1746936774}
   - component: {fileID: 1746936773}
   - component: {fileID: 1746936772}
+  - component: {fileID: 1746936775}
   m_Layer: 0
   m_Name: Octave_button_dec
   m_TagString: Untagged
@@ -4413,6 +4427,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746936770}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1746936775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746936770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ff14ac2dd9a6e4dae42d8b2920a315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1747502032
 GameObject:
   m_ObjectHideFlags: 0
@@ -5263,9 +5289,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0144f4e427346fb4781f41e5be111625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  base_frequency: 0
-  frequency: 0
-  pressed: 0
+  keys: []
+  type: 0
 --- !u!1 &2073531846
 GameObject:
   m_ObjectHideFlags: 0

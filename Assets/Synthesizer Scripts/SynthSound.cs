@@ -8,6 +8,7 @@ public class SynthSound : MonoBehaviour
 {
     public List<KeySound> keys = new List<KeySound>();
     public int type;
+    int octave = 2;
     float gain = 0.05f;     //The volume of the oscillator
 
     void Start()
@@ -45,6 +46,23 @@ public class SynthSound : MonoBehaviour
             {
                 data[i + 1] = data[i];
             }
+        }
+    }
+
+    public void changeOctave(bool increment)
+    {
+        if(increment && octave < 4)
+        {
+            octave++;
+        }
+        else if(!increment && octave > 0)
+        {
+            octave--;
+        }
+
+        for (int i = 0; i < keys.Count; i++)
+        {
+            keys[i].calcOctaveFreq(octave);
         }
     }
 }
