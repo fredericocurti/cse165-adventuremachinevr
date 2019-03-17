@@ -16,19 +16,33 @@ public class Synthesizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject synthesizer = GameObject.FindWithTag("Synthesizer");
+        createSynth();
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    void createSynth()
+    {
         Transform newKey;
+        SynthSound synthSound = gameObject.GetComponent<SynthSound>();
+
         float x = -3.57f;
-        for(int i = 0; i < 29; i++)
+        for (int i = 0; i < 29; i++)
         {
-            newKey = Instantiate(white_key_prefab, synthesizer.transform);
+            newKey = Instantiate(white_key_prefab, gameObject.transform);
             newKey.localPosition = new Vector3(x, 0.17f, -0.15f);
-            SynthSound thisScript = newKey.gameObject.GetComponent<SynthSound>();
+
+            KeySound thisScript = newKey.gameObject.GetComponent<KeySound>();
             thisScript.base_frequency = white_key_freq[whiteIndex];
             thisScript.calcOctaveFreq((i / 7) + 2);
+            synthSound.keys.Add(thisScript);
+
             x += 0.327f;
-            if(whiteIndex == 6)
+            if (whiteIndex == 6)
             {
                 whiteIndex = 0;
             }
@@ -43,12 +57,14 @@ public class Synthesizer : MonoBehaviour
         int counter = 1;
         for (int j = 0; j < 20; j++)
         {
-            newKey = Instantiate(black_key_prefab, synthesizer.transform);
+            newKey = Instantiate(black_key_prefab, gameObject.transform);
             newKey.localPosition = new Vector3(x, 0.27f, 0.05f);
-            SynthSound thisScript = newKey.gameObject.GetComponent<SynthSound>();
+
+            KeySound thisScript = newKey.gameObject.GetComponent<KeySound>();
             thisScript.base_frequency = black_key_freq[blackIndex];
-            thisScript.calcOctaveFreq((j / 4) + 2);
-            x += 0.327f;
+            thisScript.calcOctaveFreq((j / 5) + 2);
+            synthSound.keys.Add(thisScript);
+
             if (blackIndex == 4)
             {
                 blackIndex = 0;
@@ -63,13 +79,13 @@ public class Synthesizer : MonoBehaviour
                 x += 0.327f;
                 counter++;
             }
-            else if(numKeys == 2)
+            else if (numKeys == 2)
             {
                 numKeys = 3;
                 counter = 1;
                 x += 0.654f;
             }
-            else if(numKeys == 3)
+            else if (numKeys == 3)
             {
                 numKeys = 2;
                 counter = 1;
@@ -80,16 +96,10 @@ public class Synthesizer : MonoBehaviour
         x = -6.0f;
         for (int k = 0; k < 4; k++)
         {
-            newKey = Instantiate(type_button_prefab, synthesizer.transform);
+            newKey = Instantiate(type_button_prefab, gameObject.transform);
             newKey.localPosition = new Vector3(x, 0.445f, 0.71f);
 
             x += 0.6f;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
