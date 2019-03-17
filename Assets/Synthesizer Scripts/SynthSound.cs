@@ -7,11 +7,12 @@ using UnityEngine;
 public class SynthSound : MonoBehaviour
 {
     public List<KeySound> keys = new List<KeySound>();
+    public int type;
     float gain = 0.05f;     //The volume of the oscillator
-
 
     void Start()
     {
+        type = 1;
     }
 
     void Update()
@@ -24,9 +25,17 @@ public class SynthSound : MonoBehaviour
         for (int i = 0; i < data.Length; i += channels)
         {
             data[i] = 0.0f;
-            for(int j = 0; j < keys.Count; j++)
+
+            for (int j = 0; j < keys.Count; j++)
             {
-                data[i] += keys[j].calculateData();
+                if(i == data.Length - channels)
+                {
+                    data[i] += keys[j].calculateData(type, data.Length, i, true);
+                }
+                else
+                {
+                    data[i] += keys[j].calculateData(type, data.Length, i, false);
+                }
             }
 
             data[i] = gain * data[i];

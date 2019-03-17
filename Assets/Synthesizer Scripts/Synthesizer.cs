@@ -22,15 +22,22 @@ public class Synthesizer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void createSynth()
     {
+        createWhiteKeys();
+        createBlackKeys();
+        createTypeButtons();
+    }
+
+    void createWhiteKeys()
+    {
         Transform newKey;
         SynthSound synthSound = gameObject.GetComponent<SynthSound>();
-
         float x = -3.57f;
+
         for (int i = 0; i < 29; i++)
         {
             newKey = Instantiate(white_key_prefab, gameObject.transform);
@@ -51,8 +58,14 @@ public class Synthesizer : MonoBehaviour
                 whiteIndex++;
             }
         }
+    }
 
-        x = -3.4065f;
+    void createBlackKeys()
+    {
+        Transform newKey;
+        SynthSound synthSound = gameObject.GetComponent<SynthSound>();
+        float x = -3.4065f;
+
         int numKeys = 2;
         int counter = 1;
         for (int j = 0; j < 20; j++)
@@ -92,14 +105,25 @@ public class Synthesizer : MonoBehaviour
                 x += 0.654f;
             }
         }
+    }
 
-        x = -6.0f;
+    void createTypeButtons()
+    {
+        Transform newKey;
+        SynthSound synthSound = gameObject.GetComponent<SynthSound>();
+        float x = -6.0f;
+
         for (int k = 0; k < 4; k++)
         {
             newKey = Instantiate(type_button_prefab, gameObject.transform);
             newKey.localPosition = new Vector3(x, 0.445f, 0.71f);
 
+            SoundType soundType = newKey.GetComponent<SoundType>();
+            soundType.id = k;
+            soundType.synthSound = synthSound;
+
             x += 0.6f;
         }
     }
 }
+
