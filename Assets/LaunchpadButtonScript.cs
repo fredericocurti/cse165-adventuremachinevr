@@ -20,10 +20,13 @@ public class LaunchpadButtonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        hand = other.gameObject.transform.parent.name == "AvatarGrabberLeft" ? "left" : "right";
-        vibrating = true;
-        OVRInput.SetControllerVibration(0.3f, 1f, hand == "left" ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch);
-        lc.onButtonPress(transform);
+        if (other.gameObject.transform.parent.name == "AvatarGrabberLeft" || other.gameObject.transform.parent.name == "AvatarGrabberRight")
+        {
+            hand = other.gameObject.transform.parent.name == "AvatarGrabberLeft" ? "left" : "right";
+            vibrating = true;
+            OVRInput.SetControllerVibration(0.3f, 1f, hand == "left" ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch);
+            lc.onButtonPress(transform);
+        }
     }
 
     private void OnValidate()
@@ -42,7 +45,8 @@ public class LaunchpadButtonScript : MonoBehaviour
             vibrationTime -= Time.fixedDeltaTime;
             if (vibrationTime <= 0f)
             {
-                OVRInput.SetControllerVibration(0f, 0f, hand == "left" ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch);
+                OVRInput.SetControllerVibration(0f, 0f, OVRInput.Controller.RTouch);
+                OVRInput.SetControllerVibration(0f, 0f, OVRInput.Controller.LTouch);
                 vibrationTime = 0.1f;
                 vibrating = false;
             }

@@ -7,7 +7,11 @@ public class PlayerScript : MonoBehaviour
     public Transform rightHand;
     public GameObject leftController;
     public Transform glowRing;
-   
+    public Vector3 targetPosition;
+    public float smoothFactor = 10;
+    public bool grabbingTheAir = false;
+    //public float grabbingTheAirSpeedFactor = 100f;
+    private Vector3 prevPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,5 +49,20 @@ public class PlayerScript : MonoBehaviour
         }
 
 
+        // Get pinch for grab the air
+        if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger) && grabbingTheAir == false) {
+            grabbingTheAir = true;
+        } else
+        {
+            grabbingTheAir = false;
+        }
+
+        if (grabbingTheAir)
+        {
+            Vector3 rightTouchVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTrackedRemote);
+            targetPosition = new Vector3(rightTouchVelocity.x, 0f, rightTouchVelocity.z) * -1f;
+            transform.position = Vector3.Lerp(transform.position, transform.position + targetPosition, Time.fixedDeltaTime * smoothFactor);
+        }
     }
+
 }
