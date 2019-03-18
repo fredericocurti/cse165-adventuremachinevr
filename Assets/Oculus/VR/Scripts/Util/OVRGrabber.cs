@@ -304,7 +304,22 @@ public class OVRGrabber : MonoBehaviour
 
         Rigidbody grabbedRigidbody = m_grabbedObj.grabbedRigidbody;
         Vector3 grabbablePosition = pos + rot * m_grabbedObjectPosOff;
+
         Quaternion grabbableRotation = rot * m_grabbedObjectRotOff;
+        if ((grabbedRigidbody.constraints & RigidbodyConstraints.FreezeRotationX) != RigidbodyConstraints.None)
+        {
+            grabbableRotation = Quaternion.Euler(grabbedRigidbody.transform.rotation.eulerAngles.x, grabbableRotation.eulerAngles.y, grabbableRotation.eulerAngles.z);
+        }
+
+        if ((grabbedRigidbody.constraints & RigidbodyConstraints.FreezeRotationY) != RigidbodyConstraints.None)
+        {
+            grabbableRotation = Quaternion.Euler(grabbableRotation.eulerAngles.x, grabbedRigidbody.transform.rotation.eulerAngles.y, grabbableRotation.eulerAngles.z);
+        }
+
+        if ((grabbedRigidbody.constraints & RigidbodyConstraints.FreezeRotationZ) != RigidbodyConstraints.None)
+        {
+            grabbableRotation = Quaternion.Euler(grabbableRotation.eulerAngles.x, grabbableRotation.eulerAngles.y, grabbedRigidbody.transform.rotation.eulerAngles.z);
+        }
 
         if (forceTeleport)
         {

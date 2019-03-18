@@ -109,7 +109,7 @@ public class LaunchpadController : MonoBehaviour
         {
             if (activeSoundButtons.Contains(button))
             {
-                for (int i = 1; i < ac.channels.Count; i++)
+                for (int i = 1; i <= 3; i++)
                 {
                     if (ac.channels[i].clip == buttonLoop)
                     {
@@ -118,7 +118,6 @@ public class LaunchpadController : MonoBehaviour
                 }
                 RemoveFromQueue(activeSoundButtons, button);
                 button.GetComponent<Renderer>().material.color = buttonGreenColor;
-
                 return;
             }
 
@@ -186,6 +185,7 @@ public class LaunchpadController : MonoBehaviour
 
         if (!samplesReady)
         {
+            print("TRIGGERED");
             bassLoop = activeBassButton != null ? activeBassButton.GetComponent<LaunchpadButtonScript>().loop : null;
             drumLoop = activeDrumButton != null ? activeDrumButton.GetComponent<LaunchpadButtonScript>().loop : null;
             soundLoops.Clear();

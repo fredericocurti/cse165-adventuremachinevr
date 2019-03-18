@@ -7,7 +7,9 @@ public class LaunchpadButtonScript : MonoBehaviour
     public AudioClip loop;
     public bool active;
     public string loopType;
-
+    public bool vibrating = false;
+    public float vibrationTime = 0.1f;
+    private string hand;
     private LaunchpadController lc;
 
     // Start is called before the first frame update
@@ -18,6 +20,9 @@ public class LaunchpadButtonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        hand = other.gameObject.transform.parent.name == "AvatarGrabberLeft" ? "left" : "right";
+        vibrating = true;
+        OVRInput.SetControllerVibration(0.3f, 1f, hand == "left" ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch);
         lc.onButtonPress(transform);
     }
 
@@ -30,5 +35,18 @@ public class LaunchpadButtonScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        if (vibrating)
+        {
+            vibrationTime -= Time.fixedDeltaTime;
+            if (vibrationTime <= 0f)
+            {
+                OVRInput.SetControllerVibration(0f, 0f, hand == "left" ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch);
+                vibrationTime = 0.1f;
+                vibrating = false;
+            }
+        }
+        
+    }
 }
