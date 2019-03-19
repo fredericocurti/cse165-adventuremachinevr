@@ -22,6 +22,7 @@ public class SoundType : MonoBehaviour
     {
         if (pressed)
         {
+            Debug.Log("here");
             synthSound.type = id;
             pressed = false;
         }

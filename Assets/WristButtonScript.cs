@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class WristButtonScript : MonoBehaviour
 {
+    public bool open = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +17,15 @@ public class WristButtonScript : MonoBehaviour
         print("pressed button!");
         GetComponent<Image>().sprite = Resources.Load<Sprite>("menubuttoninverse");
         transform.parent.GetComponent<MenuScript>().ToggleMenu();
+
+        if (open)
+        {
+            open = false;
+        }
+        else
+        {
+            open = true;
+        }
     }
 
     public void OnDismiss()

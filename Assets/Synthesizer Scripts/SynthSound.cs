@@ -60,9 +60,14 @@ public class SynthSound : MonoBehaviour
             octave--;
         }
 
-        for (int i = 0; i < keys.Count; i++)
+        for (int i = 0; i < 29; i++)
         {
-            keys[i].calcOctaveFreq(octave);
+            keys[i].calcOctaveFreq(i / 7 + octave);
+        }
+
+        for (int j = 29; j < 49; j++)
+        {
+            keys[j].calcOctaveFreq((j - 29) / 5 + octave);
         }
     }
 }

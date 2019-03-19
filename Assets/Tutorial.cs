@@ -6,111 +6,143 @@ using UnityEngine.UI;
 public class Tutorial : MonoBehaviour
 {
     public Transform user;
+    OVRGrabber left;
+    OVRGrabber right;
+    WristButtonScript wrist;
+
     float messageTime;
     Vector3 initPos;
+    bool wasPressed;
 
     int min_index = 0;
     int numChar = 1;
     int tutorial_step = 0;
     int wait = 0;
 
-    const int LINE_MAX = 28;
-    const int MAX_CHAR = 66;
-
-    string movingMessage1 = "Come closer to the desk to get started. You can teleport by pointing at the floor with your left hand and pressing the left index finger's trigger to move to the desired spot.";
-    string movingMessage2 = "Nice! You can also hold onto the trigger at your right index finger and pull yourself over like you're holding onto a rope. Try it out.";
-    string lpMessage = "Now see the launchpad in front of you? Let's start making a mix. Press one of the blue buttons by ___.";
+    string[] messages = { "Welcome to Machine Adventure VR!",
+                          "Come closer to the desk to get started. You can teleport by pointing at the floor with your left hand and pressing the left index finger's trigger to move to the desired spot.",
+                          "Nice! You can also hold onto the trigger at your right index finger and pull yourself over like you're pulling a rope. Try it out.",
+                          "Now try to grab an object in the room by pressing the middle finger trigger on either hand.",
+                          "Alright, you can put that down now.",
+                          "To use the launchpad or the synthesizer, just press the buttons and keys with your virtual finger like you would in the real world. " + 
+                          "You can experiment with that on your own.",
+                          "Finally, the settings. Try opening and closing the settings menu by pressing the button on your wrist.",
+                          "Nice. You can change locations and check the controls in the settings menu.",
+                          "Congratulations, you now know all of the controls! Have fun making music. Bye :)" };
 
     // Start is called before the first frame update
     void Start()
     {
+        left = GameObject.Find("AvatarGrabberLeft").GetComponent<OVRGrabber>();
+        right = GameObject.Find("AvatarGrabberRight").GetComponent<OVRGrabber>();
+        wrist = GameObject.Find("WristButton").GetComponent<WristButtonScript>();
         messageTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (tutorial_step < 3)
+        if (tutorial_step < 9)
         {
+            printMessage();
+
+            Vector3 pos = user.position;
             switch (tutorial_step)
             {
                 case 0:
-                    if(Time.time - messageTime >= 3.0f)
+                    if(min_index + numChar == messages[tutorial_step].Length && Time.time - messageTime > 4.0f)
                     {
-                        gameObject.GetComponent<Text>().text = movingMessage1.Substring(min_index, numChar);
-                        if(min_index + numChar < movingMessage1.Length && wait == 1)
-                        {
-                            numChar++;
-                            wait = 0;
-
-                            checkTextWidth(movingMessage1);
-                        }
-                        else if(wait < 1)
-                        {
-                            wait++;
-                        }
-                        movingTutorial();
+                        resetValues();
                     }
                     break;
 
                 case 1:
-                    gameObject.GetComponent<Text>().text = movingMessage2.Substring(min_index, numChar);
-
-                    if(min_index + numChar < movingMessage2.Length && wait == 1)
+                    if (Mathf.Abs(pos.z - GameObject.Find("Table").transform.position.z) < 2.0f)
                     {
-                        numChar++;
-                        wait = 0;
-
-                        checkTextWidth(movingMessage2);
+                        resetValues();
                     }
-                    else if (wait < 1)
-                    {
-                        wait++;
-                    }
-                    draggingTutorial();
+                    initPos = user.position;
                     break;
 
                 case 2:
-                    gameObject.GetComponent<Text>().text = lpMessage.Substring(min_index, numChar);
-
-                    if (min_index + numChar < lpMessage.Length && wait == 1)
+                    if (Mathf.Abs(Vector3.Distance(pos, initPos)) > 0.3f)
                     {
-                        numChar++;
-                        wait = 0;
-
-                        checkTextWidth(lpMessage);
+                        resetValues();
+                        Debug.Log(tutorial_step);
                     }
-                    else if (wait < 1)
+                    break;
+
+                case 3:
+                    if (left.grabbedObject != null || right.grabbedObject != null)
                     {
-                        wait++;
+                        resetValues();
+                    }
+                    break;
+                case 4:
+                    if (left.grabbedObject == null && right.grabbedObject == null)
+                    {
+                        resetValues();
+                        messageTime = Time.time;
+                    }
+                    break;
+                case 5:
+                    if (min_index + numChar == messages[tutorial_step].Length && Time.time - messageTime > 18.0f)
+                    {
+                        resetValues();
+                    }
+                    break;
+                case 6:
+                    if (wrist.open && !wasPressed)
+                    {
+                        wasPressed = true;
+                    }
+                    else if(!wrist.open && wasPressed)
+                    {
+                        resetValues();
+                        messageTime = Time.time;
+                    }
+                    break;
+                case 7:
+                    if (min_index + numChar == messages[tutorial_step].Length && Time.time - messageTime > 8.0f)
+                    {
+                        resetValues();
+                        messageTime = Time.time;
+                    }
+                    break;
+                case 8:
+                    Debug.Log(Time.time - messageTime);
+
+                    if (min_index + numChar == messages[tutorial_step].Length && Time.time - messageTime > 7.5f)
+                    {
+                        gameObject.transform.parent.gameObject.SetActive(false);
                     }
                     break;
             }
         }
     }
 
-    void movingTutorial()
+    void resetValues()
     {
-        Vector3 pos = user.position;
-        if(Mathf.Abs(pos.z - 8.0f) < 0.8f)
-        {
-            tutorial_step++;
-            min_index = 0;
-            numChar = 1;
-            wait = 0;
-            initPos = user.position;
-        }
+        tutorial_step++;
+        min_index = 0;
+        numChar = 1;
+        wait = 0;
     }
 
-    void draggingTutorial()
+    void printMessage()
     {
-        Vector3 pos = user.position;
-        if (Mathf.Abs(Vector3.Distance(pos, initPos)) > 0.5f)
+        gameObject.GetComponent<Text>().text = messages[tutorial_step].Substring(min_index, numChar);
+
+        if (min_index + numChar < messages[tutorial_step].Length && wait == 3)
         {
-            tutorial_step++;
-            min_index = 0;
-            numChar = 1;
+            numChar++;
             wait = 0;
+
+            checkTextWidth(messages[tutorial_step]);
+        }
+        else if (wait < 3)
+        {
+            wait++;
         }
     }
 

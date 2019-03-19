@@ -6,6 +6,7 @@ public class KeySound : MonoBehaviour
 {
     public float base_frequency;
     public float frequency;                 //the note
+    public bool white;
 
     float phase = 0.0f;                     //location on the wave
     float beta = 0.0f;
@@ -13,7 +14,7 @@ public class KeySound : MonoBehaviour
     int counter = 0;
     int hold = 0;
 
-    public bool pressed = false;
+    bool pressed = false;
 
     void Start()
     {
@@ -133,29 +134,65 @@ public class KeySound : MonoBehaviour
         return beta * Mathf.PingPong(phase, 1.0f);
     }
 
-    private void OnValidate()
+    void OnTriggerEnter(Collider collision)
     {
-        if (pressed)
+        if (collision.gameObject.transform.parent.name == "AvatarGrabberLeft" || collision.gameObject.transform.parent.name == "AvatarGrabberRight")
         {
-            beta = 0.5f;
-            counter = 0;
-            Vector3 pos = gameObject.transform.localPosition;
-            pos.y -= 0.04f;
-            gameObject.transform.localPosition = pos;
+            if (!pressed)
+            {
+                pressed = true;
+                beta = 0.5f;
+                counter = 0;
+                Vector3 pos = gameObject.transform.localPosition;
+                if (white)
+                {
+                    pos.y = 0.13f;
+                }
+                else
+                {
+                    pos.y = 0.23f;
+                }
+                gameObject.transform.localPosition = pos;
 
-            Vector3 rot = gameObject.transform.rotation.eulerAngles;
-            rot.x = -3.406f;
-            gameObject.transform.rotation = Quaternion.Euler(rot);
+                Vector3 rot = gameObject.transform.localRotation.eulerAngles;
+                rot.x = -3.406f;
+                gameObject.transform.localRotation = Quaternion.Euler(rot);
+            }
         }
-        if (!pressed)
-        {
-            beta = 0.0f;
-            hold = 0;
-            Vector3 pos = gameObject.transform.localPosition;
-            pos.y += 0.04f;
-            gameObject.transform.localPosition = pos;
+    }
 
-            gameObject.transform.rotation = Quaternion.identity;
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.transform.parent.name == "AvatarGrabberLeft" || other.gameObject.transform.parent.name == "AvatarGrabberRight")
+        {
+            if (pressed)
+            {
+                Debug.Log(other.transform.position.y);
+                if (white && other.transform.position.y <= 0.205f)
+                {
+                    return;
+                }
+                else if(!white && other.transform.position.y <= 0.305f)
+                {
+                    return;
+                }
+
+                pressed = false;
+                beta = 0.0f;
+                hold = 0;
+                Vector3 pos = gameObject.transform.localPosition;
+                if (white)
+                {
+                    pos.y = 0.17f;
+                }
+                else
+                {
+                    pos.y = 0.27f;
+                }
+                gameObject.transform.localPosition = pos;
+
+                gameObject.transform.localRotation = Quaternion.identity;
+            }
         }
     }
 }

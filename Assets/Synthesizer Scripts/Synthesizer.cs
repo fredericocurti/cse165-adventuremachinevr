@@ -45,6 +45,7 @@ public class Synthesizer : MonoBehaviour
 
             KeySound thisScript = newKey.gameObject.GetComponent<KeySound>();
             thisScript.base_frequency = white_key_freq[whiteIndex];
+            thisScript.white = true;
             thisScript.calcOctaveFreq((i / 7) + 2);
             synthSound.keys.Add(thisScript);
 
@@ -75,6 +76,7 @@ public class Synthesizer : MonoBehaviour
 
             KeySound thisScript = newKey.gameObject.GetComponent<KeySound>();
             thisScript.base_frequency = black_key_freq[blackIndex];
+            thisScript.white = false;
             thisScript.calcOctaveFreq((j / 5) + 2);
             synthSound.keys.Add(thisScript);
 
