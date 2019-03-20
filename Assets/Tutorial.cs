@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Tutorial : MonoBehaviour
 {
     public Transform user;
+    public bool off = false;
+
     OVRGrabber left;
     OVRGrabber right;
     MainMenuScript settings;
@@ -42,7 +44,7 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tutorial_step < 9)
+        if (!off && tutorial_step < 9)
         {
             printMessage();
 
@@ -114,7 +116,7 @@ public class Tutorial : MonoBehaviour
 
                     if (min_index + numChar == messages[tutorial_step].Length && Time.time - messageTime > 7.5f)
                     {
-                        gameObject.transform.parent.gameObject.SetActive(false);
+                        turnOff();
                     }
                     break;
             }
@@ -152,7 +154,7 @@ public class Tutorial : MonoBehaviour
         gameObject.GetComponent<Text>().text = displayMessage.Substring(min_index, numChar);
 
         float textHeight = LayoutUtility.GetPreferredHeight(gameObject.GetComponent<Text>().rectTransform); //This is the width the text would LIKE to be
-        float contHeight = gameObject.transform.GetComponent<RectTransform>().rect.height; //This is the actual width of the text's parent container
+        float contHeight = transform.GetComponent<RectTransform>().rect.height; //This is the actual width of the text's parent container
 
         if(textHeight > contHeight)
         {
@@ -161,7 +163,7 @@ public class Tutorial : MonoBehaviour
 
             gameObject.GetComponent<Text>().text = displayMessage.Substring(min_index, 1);
             float textWidth = LayoutUtility.GetPreferredWidth(gameObject.GetComponent<Text>().rectTransform); //This is the width the text would LIKE to be
-            float contWidth = gameObject.transform.GetComponent<RectTransform>().rect.width; //This is the actual width of the text's parent container
+            float contWidth = transform.GetComponent<RectTransform>().rect.width; //This is the actual width of the text's parent container
 
             while (textWidth < contWidth)
             {
@@ -185,5 +187,11 @@ public class Tutorial : MonoBehaviour
         {
             gameObject.GetComponent<Text>().text = displayMessage.Substring(min_index, numChar - 1);
         }
+    }
+
+    public void turnOff()
+    {
+        transform.parent.gameObject.SetActive(false);
+        off = true;
     }
 }

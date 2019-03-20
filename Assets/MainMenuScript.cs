@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class MainMenuScript : MonoBehaviour
 {
+    public Tutorial tutorial;
     public bool menuActive = false;
-    int openMenu = -1;
 
     Transform toggleButton;
     Transform[] children = new Transform[6];
 
+    int openMenu = -1;
     float timePassed = 0.0f;
+    bool tutorialOff = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        tutorial = GameObject.Find("Tutorial Text").GetComponent<Tutorial>();
+
         toggleButton = transform.GetChild(0);
 
         for(int i = 0; i < 6; i++)
@@ -27,6 +31,12 @@ public class MainMenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!tutorialOff && tutorial.off)
+        {
+            GameObject.Find("Tutorial_On").SetActive(false);
+            tutorialOff = true;
+        }
+
         if(openMenu != -1)
         {
             int checkButtons = children[openMenu].GetComponent<MenuScript>().buttonPressed;
@@ -42,7 +52,25 @@ public class MainMenuScript : MonoBehaviour
                         switchControlMenu(checkButtons);
                         break;
                     case 2:
-                        locaMenuHandler();
+                        locaMenuHandler(checkButtons);
+                        break;
+                    case 3:
+                        if(checkButtons == 1)
+                        {
+                            ToggleMenu(1);
+                        }
+                        break;
+                    case 4:
+                        if (checkButtons == 1)
+                        {
+                            ToggleMenu(1);
+                        }
+                        break;
+                    case 5:
+                        if (checkButtons == 1)
+                        {
+                            ToggleMenu(1);
+                        }
                         break;
                 }
             }
@@ -93,6 +121,15 @@ public class MainMenuScript : MonoBehaviour
             case 1:
                 ToggleMenu(2);
                 break;
+
+            case 2:
+                if (!tutorialOff)
+                {
+                    tutorial.turnOff();
+                    GameObject.Find("Tutorial_On").SetActive(false);
+                    tutorialOff = true;
+                }
+                break;
         }
     }
 
@@ -111,11 +148,26 @@ public class MainMenuScript : MonoBehaviour
             case 2:
                 ToggleMenu(5);
                 break;
+            case 3:
+                ToggleMenu(0);
+                break;
         }
     }
 
-    void locaMenuHandler()
+    void locaMenuHandler(int buttonPressed)
     {
         print("change locations");
+        switch (buttonPressed)
+        {
+            case 0:
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                ToggleMenu(0);
+                break;
+        }
     }
 }

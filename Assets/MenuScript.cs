@@ -27,7 +27,14 @@ public class MenuScript : MonoBehaviour
                 }
             }
         }
+
+        else if (transform.GetChild(0).gameObject.name == "Text")
+        {
+            if (transform.GetChild(1).GetComponent<ButtonScript>().pressed == true)
+            {
+                buttonPressed = 1;
+                transform.GetChild(1).GetComponent<ButtonScript>().pressed = false;
+            }
+        }
     }
-
-
 }
