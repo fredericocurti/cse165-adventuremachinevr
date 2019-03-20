@@ -138,18 +138,21 @@ public class KeySound : MonoBehaviour
     {
         if (collision.gameObject.transform.parent.name == "AvatarGrabberLeft" || collision.gameObject.transform.parent.name == "AvatarGrabberRight")
         {
-            if (!pressed && collision.transform.position.y <= transform.position.y + 0.05f)
+            if (!pressed)
             {
                 pressed = true;
                 beta = 0.5f;
                 counter = 0;
+
                 Vector3 pos = gameObject.transform.localPosition;
                 if (white)
                 {
+                    gameObject.GetComponent<BoxCollider>().size = new Vector3(1.0f, 1.33f, 0.37f);
                     pos.y = 0.13f;
                 }
                 else
                 {
+                    gameObject.GetComponent<BoxCollider>().size = new Vector3(1.0f, 1.33f, 1.0f);
                     pos.y = 0.23f;
                 }
                 gameObject.transform.localPosition = pos;
@@ -170,13 +173,16 @@ public class KeySound : MonoBehaviour
                 pressed = false;
                 beta = 0.0f;
                 hold = 0;
+
                 Vector3 pos = gameObject.transform.localPosition;
                 if (white)
                 {
+                    gameObject.GetComponent<BoxCollider>().size = new Vector3(1.0f, 1.0f, 0.37f);
                     pos.y = 0.17f;
                 }
                 else
                 {
+                    gameObject.GetComponent<BoxCollider>().size = new Vector3(1.0f, 1.0f, 1.0f);
                     pos.y = 0.27f;
                 }
                 gameObject.transform.localPosition = pos;

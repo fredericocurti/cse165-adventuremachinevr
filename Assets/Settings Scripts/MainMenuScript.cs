@@ -145,12 +145,14 @@ public class MainMenuScript : MonoBehaviour
                     left.grab = true;
                     right.grab = true;
                     GameObject.Find("Grab_On").GetComponent<Text>().text = "GRAB:\n ON";
+                    timePassed = Time.time;
                 }
                 else
                 {
                     left.grab = false;
                     right.grab = false;
                     GameObject.Find("Grab_On").GetComponent<Text>().text = "GRAB:\n OFF";
+                    timePassed = Time.time;
                 }
                 break;
         }
