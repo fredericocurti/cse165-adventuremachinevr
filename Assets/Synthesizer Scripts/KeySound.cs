@@ -138,7 +138,7 @@ public class KeySound : MonoBehaviour
     {
         if (collision.gameObject.transform.parent.name == "AvatarGrabberLeft" || collision.gameObject.transform.parent.name == "AvatarGrabberRight")
         {
-            if (!pressed)
+            if (!pressed && collision.transform.position.y <= transform.position.y + 0.05f)
             {
                 pressed = true;
                 beta = 0.5f;
@@ -167,15 +167,6 @@ public class KeySound : MonoBehaviour
         {
             if (pressed)
             {
-                if (white && other.transform.position.y <= 0.205f)
-                {
-                    return;
-                }
-                else if(!white && other.transform.position.y <= 0.305f)
-                {
-                    return;
-                }
-
                 pressed = false;
                 beta = 0.0f;
                 hold = 0;

@@ -144,13 +144,13 @@ public class MainMenuScript : MonoBehaviour
                 {
                     left.grab = true;
                     right.grab = true;
-                    GameObject.Find("Selection Type").GetComponent<Text>().text = "SELECTION MODE: GRAB";
+                    GameObject.Find("Grab_On").GetComponent<Text>().text = "GRAB:\n ON";
                 }
                 else
                 {
                     left.grab = false;
                     right.grab = false;
-                    GameObject.Find("Selection Type").GetComponent<Text>().text = "SELECTION MODE: RAYCAST";
+                    GameObject.Find("Grab_On").GetComponent<Text>().text = "GRAB:\n OFF";
                 }
                 break;
         }
