@@ -64,7 +64,6 @@ public class SynthSound : MonoBehaviour
             octave--;
         }
 
-        Debug.Log(octave);
         octaveText.text = octave.ToString();
 
         for (int i = 0; i < 29; i++)
