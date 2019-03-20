@@ -167,7 +167,6 @@ public class KeySound : MonoBehaviour
         {
             if (pressed)
             {
-                Debug.Log(other.transform.position.y);
                 if (white && other.transform.position.y <= 0.205f)
                 {
                     return;

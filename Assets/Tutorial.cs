@@ -70,7 +70,6 @@ public class Tutorial : MonoBehaviour
                     if (Mathf.Abs(Vector3.Distance(pos, initPos)) > 0.3f)
                     {
                         resetValues();
-                        Debug.Log(tutorial_step);
                     }
                     break;
 

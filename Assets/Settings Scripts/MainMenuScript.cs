@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
+    OVRGrabber left;
+    OVRGrabber right;
+
     public Tutorial tutorial;
     public bool menuActive = false;
+    public bool grab = false;
 
     Transform toggleButton;
     Transform[] children = new Transform[6];
@@ -17,6 +22,9 @@ public class MainMenuScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        left = GameObject.Find("AvatarGrabberLeft").GetComponent<OVRGrabber>();
+        right = GameObject.Find("AvatarGrabberRight").GetComponent<OVRGrabber>();
+
         tutorial = GameObject.Find("Tutorial Text").GetComponent<Tutorial>();
 
         toggleButton = transform.GetChild(0);
@@ -128,6 +136,21 @@ public class MainMenuScript : MonoBehaviour
                     tutorial.turnOff();
                     GameObject.Find("Tutorial_On").SetActive(false);
                     tutorialOff = true;
+                }
+                break;
+            case 3:
+                grab = !grab;
+                if (grab)
+                {
+                    left.grab = true;
+                    right.grab = true;
+                    GameObject.Find("Selection Type").GetComponent<Text>().text = "SELECTION MODE: GRAB";
+                }
+                else
+                {
+                    left.grab = false;
+                    right.grab = false;
+                    GameObject.Find("Selection Type").GetComponent<Text>().text = "SELECTION MODE: RAYCAST";
                 }
                 break;
         }

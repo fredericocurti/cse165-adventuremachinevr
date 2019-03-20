@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Octave : MonoBehaviour
 {
-    public bool pressed;
     SynthSound synthSound;
+    float pressedTime = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,9 +18,9 @@ public class Octave : MonoBehaviour
     {
     }
 
-    private void OnValidate()
+    void OnTriggerEnter(Collider collision)
     {
-        if (pressed)
+        if(Time.time - pressedTime > 1.0f)
         {
             if(gameObject.name == "Octave_button_dec")
             {
@@ -30,7 +30,7 @@ public class Octave : MonoBehaviour
             {
                 synthSound.changeOctave(true);
             }
-            pressed = false;
+            pressedTime = Time.time;
         }
     }
 }

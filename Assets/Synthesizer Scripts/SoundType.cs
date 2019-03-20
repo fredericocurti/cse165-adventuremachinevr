@@ -5,7 +5,6 @@ using UnityEngine;
 public class SoundType : MonoBehaviour
 {
     public int id;
-    public bool pressed;
     public SynthSound synthSound;
 
     // Start is called before the first frame update
@@ -18,13 +17,11 @@ public class SoundType : MonoBehaviour
     {   
     }
 
-    private void OnValidate()
+    void OnTriggerEnter(Collider collision)
     {
-        if (pressed)
+        if (collision.gameObject.transform.parent.name == "AvatarGrabberLeft" || collision.gameObject.transform.parent.name == "AvatarGrabberRight")
         {
-            Debug.Log("here");
-            synthSound.type = id;
-            pressed = false;
+            synthSound.changeType(id);
         }
     }
 }
