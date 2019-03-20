@@ -4,37 +4,30 @@ using UnityEngine;
 
 public class MenuScript : MonoBehaviour
 {
-    public bool menuActive = false;
-    Transform toggleButton;
-    Transform menuCanvas;
+    public int buttonPressed = -1;
+
     // Start is called before the first frame update
     void Start()
     {
-        toggleButton = transform.GetChild(0);
-        menuCanvas = transform.GetChild(1);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void ToggleMenu()
-    {
-        menuActive = !menuActive;
-        if (menuActive == false)
+        if(transform.GetChild(0).gameObject.name != "Text")
         {
-            toggleButton.GetComponent<WristButtonScript>().OnDismiss();
-            menuCanvas.gameObject.SetActive(false);
-        } else
-        {
-            menuCanvas.gameObject.SetActive(true);
+            for(int i = 0; i < transform.childCount; i++)
+            {
+                if(transform.GetChild(i).GetComponent<ButtonScript>().pressed == true)
+                {
+                    buttonPressed = i;
+                    transform.GetChild(i).GetComponent<ButtonScript>().pressed = false;
+                    break;
+                }
+            }
         }
     }
 
-    public void OnPressItem()
-    {
-        print("onpressitem");
-    }
+
 }

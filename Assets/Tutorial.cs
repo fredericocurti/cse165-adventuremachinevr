@@ -8,7 +8,7 @@ public class Tutorial : MonoBehaviour
     public Transform user;
     OVRGrabber left;
     OVRGrabber right;
-    WristButtonScript wrist;
+    MainMenuScript settings;
 
     float messageTime;
     Vector3 initPos;
@@ -35,7 +35,7 @@ public class Tutorial : MonoBehaviour
     {
         left = GameObject.Find("AvatarGrabberLeft").GetComponent<OVRGrabber>();
         right = GameObject.Find("AvatarGrabberRight").GetComponent<OVRGrabber>();
-        wrist = GameObject.Find("WristButton").GetComponent<WristButtonScript>();
+        settings = GameObject.Find("Menu").GetComponent<MainMenuScript>();
         messageTime = Time.time;
     }
 
@@ -92,11 +92,11 @@ public class Tutorial : MonoBehaviour
                     }
                     break;
                 case 6:
-                    if (wrist.open && !wasPressed)
+                    if (settings.menuActive && !wasPressed)
                     {
                         wasPressed = true;
                     }
-                    else if(!wrist.open && wasPressed)
+                    else if(!settings.menuActive && wasPressed)
                     {
                         resetValues();
                         messageTime = Time.time;

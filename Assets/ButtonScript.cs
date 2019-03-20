@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class ButtonScript : MonoBehaviour
 {
+    public bool pressed = false;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        print("PRESSED BUTTON");
-    }
-
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        pressed = true;
     }
 }
