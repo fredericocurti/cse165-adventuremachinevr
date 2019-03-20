@@ -2638,7 +2638,7 @@ GameObject:
   - component: {fileID: 594402133}
   - component: {fileID: 594402132}
   m_Layer: 0
-  m_Name: Selection Type
+  m_Name: Grab_On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2722,7 +2722,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'SELECTION MODE: RAYCAST'
+  m_Text: 'GRAB:
+
+    OFF'
 --- !u!222 &594402135
 CanvasRenderer:
   m_ObjectHideFlags: 0
