@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
@@ -17,7 +18,22 @@ public class MainMenuScript : MonoBehaviour
 
     int openMenu = -1;
     float timePassed = 0.0f;
-    bool tutorialOff = false;
+    public bool tutorialOff = false;
+
+    private void Awake()
+    {
+        GameObject globalControl = GameObject.FindGameObjectWithTag("GameController");
+        if (globalControl.GetComponent<GlobalControl>().reset)
+        {
+            GameObject.Find("Tutorial Text").GetComponent<Tutorial>().turnOff();
+            GameObject.Find("Tutorial_On").SetActive(false);
+            tutorialOff = true;
+        }
+        else
+        {
+            tutorial = GameObject.Find("Tutorial Text").GetComponent<Tutorial>();
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,11 +41,9 @@ public class MainMenuScript : MonoBehaviour
         left = GameObject.Find("AvatarGrabberLeft").GetComponent<OVRGrabber>();
         right = GameObject.Find("AvatarGrabberRight").GetComponent<OVRGrabber>();
 
-        tutorial = GameObject.Find("Tutorial Text").GetComponent<Tutorial>();
-
         toggleButton = transform.GetChild(0);
 
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < 5; i++)
         {
             children[i] = transform.GetChild(i + 1);
             children[i].gameObject.SetActive(false);
@@ -41,13 +55,20 @@ public class MainMenuScript : MonoBehaviour
     {
         if (!tutorialOff && tutorial.off)
         {
-            GameObject.Find("Tutorial_On").SetActive(false);
-            tutorialOff = true;
+            if (GameObject.Find("Tutorial_On") != null)
+            {
+                GameObject.Find("Tutorial_On").SetActive(false);
+                tutorialOff = true;
+            }
+            
+
         }
 
         if(openMenu != -1)
         {
+            //print(openMenu + " " + children[openMenu].gameObject.name);
             int checkButtons = children[openMenu].GetComponent<MenuScript>().buttonPressed;
+            
             children[openMenu].GetComponent<MenuScript>().buttonPressed = -1;
             if ( checkButtons != -1 && (Time.time - timePassed > 1.0f))
             {
@@ -60,21 +81,18 @@ public class MainMenuScript : MonoBehaviour
                         switchControlMenu(checkButtons);
                         break;
                     case 2:
-                        locaMenuHandler(checkButtons);
-                        break;
-                    case 3:
                         if(checkButtons == 1)
                         {
                             ToggleMenu(1);
                         }
                         break;
-                    case 4:
+                    case 3:
                         if (checkButtons == 1)
                         {
                             ToggleMenu(1);
                         }
                         break;
-                    case 5:
+                    case 4:
                         if (checkButtons == 1)
                         {
                             ToggleMenu(1);
@@ -127,7 +145,7 @@ public class MainMenuScript : MonoBehaviour
                 break;
 
             case 1:
-                ToggleMenu(2);
+                resetScene();
                 break;
 
             case 2:
@@ -163,15 +181,15 @@ public class MainMenuScript : MonoBehaviour
         switch (buttonPressed)
         {
             case 0:
-                ToggleMenu(3);
+                ToggleMenu(2);
                 break;
 
             case 1:
-                ToggleMenu(4);
+                ToggleMenu(3);
                 break;
 
             case 2:
-                ToggleMenu(5);
+                ToggleMenu(4);
                 break;
             case 3:
                 ToggleMenu(0);
@@ -179,20 +197,37 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    void locaMenuHandler(int buttonPressed)
+    void resetScene()
     {
         print("change locations");
-        switch (buttonPressed)
-        {
-            case 0:
-                break;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject globalControl = GameObject.FindGameObjectWithTag("GameController");
+        globalControl.GetComponent<GlobalControl>().prevPlayerPosition = player.transform.position;
+        globalControl.GetComponent<GlobalControl>().prevPlayerRotation = player.transform.rotation;
+        globalControl.GetComponent<GlobalControl>().reset = true;
 
-            case 1:
-                break;
 
-            case 2:
-                ToggleMenu(0);
-                break;
-        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+
+        //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        //Destroy(players[1]);
+
+        //newPlayer.transform.position = placeholder.transform.position;
+        //newPlayer.transform.rotation = placeholder.transform.rotation;
+        //GameObject.FindGameObjectWithTag("Player").transform.position = playerPosition;
+        //GameObject.FindGameObjectWithTag("Player").transform.rotation = playerRotation;
+        //switch (buttonPressed)
+        //{
+        //    case 0:
+        //        break;
+
+        //    case 1:
+        //        break;
+
+        //    case 2:
+        //        ToggleMenu(0);
+        //        break;
+        //}
     }
 }

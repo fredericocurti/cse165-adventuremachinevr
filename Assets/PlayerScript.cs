@@ -12,7 +12,17 @@ public class PlayerScript : MonoBehaviour
     public bool grabbingTheAir = false;
     //public float grabbingTheAirSpeedFactor = 100f;
     private Vector3 prevPos;
+    private GameObject player;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        GlobalControl gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GlobalControl>();
+        transform.position = gc.prevPlayerPosition;
+        transform.rotation = gc.prevPlayerRotation;
+    }
+
+
     void Start()
     {
         leftController = GameObject.Find("controller_left");
@@ -64,5 +74,4 @@ public class PlayerScript : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, transform.position + targetPosition, Time.fixedDeltaTime * smoothFactor);
         }
     }
-
 }

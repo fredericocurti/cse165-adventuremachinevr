@@ -185,7 +185,7 @@ public class LaunchpadController : MonoBehaviour
 
         if (!samplesReady)
         {
-            print("TRIGGERED");
+            //print("TRIGGERED");
             bassLoop = activeBassButton != null ? activeBassButton.GetComponent<LaunchpadButtonScript>().loop : null;
             drumLoop = activeDrumButton != null ? activeDrumButton.GetComponent<LaunchpadButtonScript>().loop : null;
             soundLoops.Clear();

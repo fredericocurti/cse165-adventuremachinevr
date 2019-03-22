@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class WristButtonScript : MonoBehaviour
 {
+    public float debounceTime = 1f;
+    public bool ready = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -12,8 +14,13 @@ public class WristButtonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("menubuttoninverse");
-        transform.parent.GetComponent<MainMenuScript>().openCloseMenu();
+        if (ready)
+        {
+            GetComponent<Image>().sprite = Resources.Load<Sprite>("menubuttoninverse");
+            transform.parent.GetComponent<MainMenuScript>().openCloseMenu();
+        }
+        ready = false;
+
     }
 
     public void OnDismiss()
@@ -23,6 +30,16 @@ public class WristButtonScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {    
+    {
+        if (ready == false)
+        {
+            debounceTime -= Time.deltaTime;
+        }
+
+        if (debounceTime <= 0f)
+        {
+            ready = true;
+            debounceTime = 2f;
+        }
     }
 }

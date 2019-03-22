@@ -9,6 +9,7 @@ public class VolumeSliderScript : MonoBehaviour
     public float value = 0.5f;
     private float prevValue = -1f;
     private AudioController ac;
+    public string type;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +20,14 @@ public class VolumeSliderScript : MonoBehaviour
 
     void OnChange(float value)
     {
-        ac.master.volume = value;
+        if (type == "pitch")
+        {
+            ac.master.pitch = value + 0.5f;
+        } else if (type == "volume")
+        {
+            ac.master.volume = value;
+        }
+
     }
 
     // Update is called once per frame

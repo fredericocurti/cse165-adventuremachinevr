@@ -22,6 +22,7 @@ public class AudioController : MonoBehaviour
     public CircularSliderScript lowPassDial;
     public CircularSliderScript highPassDial;
     public CircularSliderScript reverbDial;
+    public bool inSync = false;
 
     // Start is called before the first frame update
 
@@ -44,6 +45,7 @@ public class AudioController : MonoBehaviour
 
     public void PlayLoop(AudioClip audioClip, string loopType)
     {
+        inSync = false;
         if (loopType == "bass")
         {
             bassLoop = audioClip;
@@ -59,6 +61,7 @@ public class AudioController : MonoBehaviour
 
     public void PlayClipOnChannel(AudioClip audioClip, int channel)
     {
+        inSync = false;
         if (masterPlaying == false)
         {
             masterPlaying = true;
@@ -85,25 +88,34 @@ public class AudioController : MonoBehaviour
     {
         for (int i = 1; i < channelsPerSpeaker + 1; i++)
         {
-            channels[i].timeSamples = master.timeSamples;
+            if (inSync == false)
+            {
+                channels[i].timeSamples = master.timeSamples;
+            }
             channels[i].volume = master.volume;
+            channels[i].pitch = master.pitch;
+        }
+
+        if (inSync == false)
+        {
+            inSync = true;
         }
 
         lowPassFilter.cutoffFrequency = 10f + (21990f * lowPassDial.value);
         highPassFilter.cutoffFrequency = 22000f - (22000f * highPassDial.value);
         reverbFilter.reverbLevel = -1000f + (3000f * reverbDial.value);
 
-        float[] spectrum = new float[256];
+        //float[] spectrum = new float[256];
 
-        AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
+        //AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
-        for (int i = 1; i < spectrum.Length - 1; i++)
-        {
-            Debug.DrawLine(new Vector3(i - 1, spectrum[i] + 10, 0), new Vector3(i, spectrum[i + 1] + 10, 0), Color.red);
-            Debug.DrawLine(new Vector3(i - 1, Mathf.Log(spectrum[i - 1]) + 10, 2), new Vector3(i, Mathf.Log(spectrum[i]) + 10, 2), Color.cyan);
-            Debug.DrawLine(new Vector3(Mathf.Log(i - 1), spectrum[i - 1] - 10, 1), new Vector3(Mathf.Log(i), spectrum[i] - 10, 1), Color.green);
-            Debug.DrawLine(new Vector3(Mathf.Log(i - 1), Mathf.Log(spectrum[i - 1]), 3), new Vector3(Mathf.Log(i), Mathf.Log(spectrum[i]), 3), Color.blue);
-        }
+        //for (int i = 1; i < spectrum.Length - 1; i++)
+        //{
+        //    Debug.DrawLine(new Vector3(i - 1, spectrum[i] + 10, 0), new Vector3(i, spectrum[i + 1] + 10, 0), Color.red);
+        //    Debug.DrawLine(new Vector3(i - 1, Mathf.Log(spectrum[i - 1]) + 10, 2), new Vector3(i, Mathf.Log(spectrum[i]) + 10, 2), Color.cyan);
+        //    Debug.DrawLine(new Vector3(Mathf.Log(i - 1), spectrum[i - 1] - 10, 1), new Vector3(Mathf.Log(i), spectrum[i] - 10, 1), Color.green);
+        //    Debug.DrawLine(new Vector3(Mathf.Log(i - 1), Mathf.Log(spectrum[i - 1]), 3), new Vector3(Mathf.Log(i), Mathf.Log(spectrum[i]), 3), Color.blue);
+        //}
 
     }
 

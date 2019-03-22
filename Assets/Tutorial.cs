@@ -21,7 +21,7 @@ public class Tutorial : MonoBehaviour
     int tutorial_step = 0;
     int wait = 0;
 
-    string[] messages = { "Welcome to Machine Adventure VR!",
+    string[] messages = { "Welcome to Adventure Machine VR!",
                           "Come closer to the desk to get started. You can teleport by pointing at the floor with your left hand and pressing the left index finger's trigger to move to the desired spot.",
                           "Nice! You can also hold onto the trigger at your right index finger and pull yourself over like you're pulling a rope. Try it out.",
                           "Now try to grab an object in the room by pressing the middle finger trigger on either hand.",

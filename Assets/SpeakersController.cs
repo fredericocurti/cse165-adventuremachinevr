@@ -36,14 +36,7 @@ public class SpeakersController : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //foreach(AudioSource audioSource in speakers)
-        //{
-        //    audioSource.pl
-        //}
-    }
+
 
     void PlayClipOnChannel(AudioClip audioClip, int channel)
     {
