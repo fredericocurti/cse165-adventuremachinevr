@@ -1,6 +1,10 @@
 # cse165-adventuremachinevr
 
-![Demo](demo.gif)
+<p align="center">
+    <img src='demo.gif'/>
+</p>
+
+[Video demo](https://www.youtube.com/watch?v=PXbE9RbXcv0)
 
 ## How to Play
 
