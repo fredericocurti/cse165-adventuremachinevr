@@ -1,4 +1,5 @@
 # cse165-adventuremachinevr
+This was made as the final project for UCSD's CSE 165 course
 
 <p align="center">
     <img src='demo.gif'/>
